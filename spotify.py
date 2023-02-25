@@ -90,8 +90,8 @@ def top_track(artist_id, token):
     >>> top_track("5lLVx3mMyUvZ9QKzM09CZa", token)[0]["name"]
     'Тримай'
     """
-    url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks"
-    results = requests.get(url, headers=get_auth_header(token), params={"country":"US"})
+    url = f"https://api.spotify.com/v1/artists/{artist_id}/top-tracks?country=US"
+    results = requests.get(url, headers=get_auth_header(token))
     json_result = json.loads(results.content)["tracks"]
     return json_result
 
@@ -123,6 +123,7 @@ def main():
                 tracks = top_track(artist["id"], token)
             request = print("""
     Write:
+    
     one - to get one most popular song
     set - to get set of most popular songs
     back - to go back to choices
@@ -139,7 +140,6 @@ def main():
             if tracks is None:
                 tracks = top_track(artist["id"], token)
             top_track_id = tracks[0]["id"]
-            print(top_track_id)
             for code in get_markets(top_track_id, token):
                 # print(code)
                 try:
